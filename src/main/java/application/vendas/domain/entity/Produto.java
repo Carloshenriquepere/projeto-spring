@@ -1,5 +1,7 @@
 package application.vendas.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -11,8 +13,10 @@ public class Produto {
     private Integer id;
     private String descricao;
 
+    @JsonIgnore
     @Column(name = "preco_unitario")
     private BigDecimal preco;
+
 
     public BigDecimal getPreco() {
         return preco;
