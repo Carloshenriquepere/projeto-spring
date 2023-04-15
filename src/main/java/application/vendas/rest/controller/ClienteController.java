@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.http.HttpStatus.*;
+
 import java.util.List;
 
 @RestController
@@ -29,13 +31,13 @@ public class ClienteController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public Cliente save (@RequestBody Cliente cliente){
         return clientes.save(cliente);
     }
 
     @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(NO_CONTENT)
     public void delete(@PathVariable Integer id){
         clientes.findById(id)
                 .map( cliente -> {
@@ -46,7 +48,7 @@ public class ClienteController {
     }
 
     @PutMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(NO_CONTENT)
     public void update(@PathVariable Integer id,
                                  @RequestBody Cliente cliente){
         clientes
