@@ -2,15 +2,15 @@ package application.vendas.rest.controller;
 
 import application.vendas.domain.entity.Cliente;
 import application.vendas.domain.repository.Clientes;
+import application.vendas.exception.RegraNegocioException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -26,7 +26,7 @@ public class ClienteController {
     public Cliente getClienteById(@PathVariable Integer id ){
         return clientes.findById(id)
                 .orElseThrow(()->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+                        new RegraNegocioException( "Cliente não encontrado"));
 
     }
 
@@ -44,7 +44,7 @@ public class ClienteController {
                     clientes.delete(cliente);
                     return cliente;
                 })
-                .orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado" ));
+                .orElseThrow(() ->new RegraNegocioException("Cliente não encontrado" ));
     }
 
     @PutMapping("{id}")
@@ -57,8 +57,7 @@ public class ClienteController {
                     cliente.setId(clienteExistente.getId());
                     clientes.save(cliente);
                     return clienteExistente;
-                } ).orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Cliente não encontrado" ));
+                } ).orElseThrow(() ->new RegraNegocioException("Cliente não encontrado" ));
     }
 
     @GetMapping

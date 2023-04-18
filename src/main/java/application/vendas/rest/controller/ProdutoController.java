@@ -2,6 +2,7 @@ package application.vendas.rest.controller;
 
 import application.vendas.domain.entity.Produto;
 import application.vendas.domain.repository.Produtos;
+import application.vendas.exception.RegraNegocioException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +41,7 @@ public class ProdutoController {
                     return produto;
                 })
                 .orElseThrow( () ->
-                        new ResponseStatusException(NOT_FOUND,
-                        "Produto não encontrado"));
+                        new RegraNegocioException("Produto não encontrado"));
     }
 
     @DeleteMapping("{id}")
@@ -54,16 +54,14 @@ public class ProdutoController {
                     return Void.TYPE;
                 })
                 .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND,
-                        "Produto não encontrado" ));
+                        new RegraNegocioException("Produto não encontrado" ));
     }
 
     @GetMapping("{id}")
     public Produto getProdutoById(@PathVariable Integer id ){
         return produtos.findById(id)
                 .orElseThrow(()->
-                        new ResponseStatusException(NOT_FOUND,
-                                "Produto não encontrado"));
+                        new RegraNegocioException("Produto não encontrado"));
 
     }
 

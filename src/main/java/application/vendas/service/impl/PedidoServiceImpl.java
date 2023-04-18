@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,12 +31,13 @@ public class PedidoServiceImpl  implements PedidoService {
     private final Produtos produtosRepository;
     private final ItensPedidos itensPedidoRepository;
 
+
     @Override
     @Transactional
     public Pedido salvar(PedidoDTO dto) {
         Integer idCliente = dto.getCliente();
-       Cliente cliente = clientesRepository.
-               findById(idCliente)
+       Cliente cliente = clientesRepository
+               .findById(idCliente)
                 .orElseThrow( () ->
                         new RegraNegocioException("Código de cliente inválido"));
 
@@ -47,12 +49,17 @@ public class PedidoServiceImpl  implements PedidoService {
         repository.save(pedido);
         itensPedidoRepository.saveAll(itensPedido);
         pedido.setItens(itensPedido);
-        return null;
+        return pedido;
+    }
+
+    @Override
+    public Optional<Pedido> obterPedidoCompleto(Integer id) {
+        return repository.findByIdFetchItens(id);
     }
 
     private List<ItemPedido> converterItens ( Pedido pedido, List<ItemPedidoDTO> itens){
         if(itens.isEmpty()){
-            throw new RegraNegocioException("Não é possivel realizar um pedido sem itens. ");
+            throw new RegraNegocioException("Não é possível realizar um pedido sem itens. ");
         }
 
         return itens
