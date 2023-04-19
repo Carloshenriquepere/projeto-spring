@@ -6,11 +6,12 @@ import application.vendas.exception.RegraNegocioException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 
 @RestController
@@ -25,14 +26,14 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Produto save (@RequestBody Produto produto){
+    public Produto save ( @Valid @RequestBody Produto produto){
         return produtos.save(produto);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     public void update(@PathVariable Integer id,
-                       @RequestBody Produto produto){
+                       @RequestBody @Valid Produto produto){
         produtos
                 .findById(id)
                 .map( produtoExistente ->{

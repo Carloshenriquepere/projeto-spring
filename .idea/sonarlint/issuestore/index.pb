@@ -11,5 +11,9 @@ p
 @src/main/java/application/vendas/domain/repository/Produtos.java,2\d\2d209759619fe2bf85b13c5a922d7e664e33a929
 a
 1src/main/java/application/vendas/Application.java,1\9\19b0b13e2780ba289def142c9efefeae515eaadd
-n
->src/main/java/application/vendas/domain/entity/ItemPedido.java,2\d\2d95c766e6b56b1c60f0afc90666a0634c352709
+p
+@src/main/java/application/vendas/domain/repository/Clientes.java,1\0\1031f559a29af8581a2aa928032bbb11fbb99f4c
+t
+Dsrc/main/java/application/vendas/domain/repository/ItensPedidos.java,d\0\d0584b7b650099d01cfbd9e265ed0ca4787c52eb
+u
+Esrc/main/java/application/vendas/exception/RegraNegocioException.java,f\d\fdc3c0d7aeb6c54c3270960197b66dc7919ccd72

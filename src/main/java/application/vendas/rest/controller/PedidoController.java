@@ -3,7 +3,9 @@ package application.vendas.rest.controller;
 
 import application.vendas.domain.entity.ItemPedido;
 import application.vendas.domain.entity.Pedido;
+import application.vendas.domain.enums.StatusPedido;
 import application.vendas.exception.RegraNegocioException;
+import application.vendas.rest.dto.AtualizacaoStatusPedidoDTO;
 import application.vendas.rest.dto.InformacoesItemPedidoDTO;
 import application.vendas.rest.dto.InformacoesPedidoDTO;
 import application.vendas.rest.dto.PedidoDTO;
@@ -11,12 +13,14 @@ import application.vendas.service.PedidoService;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
+
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -30,18 +34,26 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Integer save (@RequestBody PedidoDTO dto){
+    public Integer save (@RequestBody @Valid PedidoDTO dto){
         Pedido pedido = service.salvar(dto);
         return pedido.getId();
     }
 
-    @GetMapping({"id"})
+    @GetMapping("{id}")
     public InformacoesPedidoDTO getById( @PathVariable Integer id){
         return service
                 .obterPedidoCompleto(id)
                 .map(p -> converter(p) )
                 .orElseThrow(() ->
                         new RegraNegocioException("Pedido não encontrado"));
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void updateStatus( @PathVariable Integer id,@RequestBody @Valid AtualizacaoStatusPedidoDTO dto){
+        String novoStatus = dto.getNovoStatus();
+        service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
+
     }
 
     private InformacoesPedidoDTO converter (Pedido pedido){
@@ -52,6 +64,7 @@ public class PedidoController {
                 .cpf(pedido.getCliente().getCpf())
                 .nomeCliente(pedido.getCliente().getNome())
                 .total(pedido.getTotal())
+                 .status(pedido.getStatus().name())
                 .itemInfo(converter(pedido.getItens()))
                 .build();
     }
