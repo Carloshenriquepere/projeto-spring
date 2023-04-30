@@ -1,1 +1,2 @@
 # projeto-spring
+Nesse projeto desenvolvi uma aplicação utilizando Java, Spring Boot, Spring Security, My SQL, Swagger para documentação, na qual eu consigo criar novos usuários, consultar informações e cadastrar produtos. Desenvolvi uma camada de segurança na aplicação para não permitir que usuários que não estejam autenticados possam consultar e alterar dados, também criei roles específicas para usuários comuns e usuários administradores.
