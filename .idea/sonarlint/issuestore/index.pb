@@ -71,8 +71,6 @@ y
 Isrc/main/java/application/vendas/domain/repository/UsuarioRepository.java,d\5\d5e23f07293b9a8a178a627f16229f13596baa93
 k
 ;src/main/java/application/vendas/domain/entity/Usuario.java,a\3\a37b26c135f43ed9538da573531bf561bdd7cee9
-w
-Gsrc/main/java/application/vendas/rest/controller/ClienteController.java,5\a\5ae1b2033b5588d6c08bd34edd4c3ac1c2b8359b
 n
 >src/main/java/application/vendas/domain/entity/ItemPedido.java,2\d\2d95c766e6b56b1c60f0afc90666a0634c352709
 k

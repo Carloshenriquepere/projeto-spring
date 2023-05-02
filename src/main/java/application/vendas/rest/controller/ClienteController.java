@@ -3,6 +3,7 @@ package application.vendas.rest.controller;
 import application.vendas.domain.entity.Cliente;
 import application.vendas.domain.repository.Clientes;
 import application.vendas.exception.RegraNegocioException;
+import io.swagger.annotations.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Api("Api Clientes")
 public class ClienteController {
 
     private Clientes clientes;
@@ -24,7 +26,12 @@ public class ClienteController {
     }
 
     @GetMapping("{id}")
-    public Cliente getClienteById(@PathVariable Integer id ){
+    @ApiOperation("Obter detalhes de um cliente ")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente encontrado."),
+            @ApiResponse(code = 400, message = "Cliente não encontrado para o ID informando.")
+    })
+    public Cliente getClienteById(@PathVariable @ApiParam("Id do cliente") Integer id ){
         return clientes.findById(id)
                 .orElseThrow(()->
                         new RegraNegocioException( "Cliente não encontrado"));
@@ -33,6 +40,11 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(CREATED)
+    @ApiOperation("Salvar um novo cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente salvo com sucesso."),
+            @ApiResponse(code = 404, message = "Erro de validação.")
+    })
     public Cliente save ( @Valid @RequestBody Cliente cliente){
         return clientes.save(cliente);
     }
