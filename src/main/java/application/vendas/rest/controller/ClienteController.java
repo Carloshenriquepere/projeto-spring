@@ -28,10 +28,10 @@ public class ClienteController {
     @GetMapping("{id}")
     @ApiOperation("Obter detalhes de um cliente ")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Cliente encontrado."),
+            @ApiResponse(code = 302, message = "Cliente encontrado."),
             @ApiResponse(code = 400, message = "Cliente não encontrado para o ID informando.")
     })
-    public Cliente getClienteById(@PathVariable @ApiParam("Id do cliente") Integer id ){
+    public Cliente getClienteById(@PathVariable @ApiParam("ID do cliente") Integer id ){
         return clientes.findById(id)
                 .orElseThrow(()->
                         new RegraNegocioException( "Cliente não encontrado"));
@@ -42,8 +42,8 @@ public class ClienteController {
     @ResponseStatus(CREATED)
     @ApiOperation("Salvar um novo cliente")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Cliente salvo com sucesso."),
-            @ApiResponse(code = 404, message = "Erro de validação.")
+            @ApiResponse(code = 201, message = "Cliente salvo com sucesso."),
+            @ApiResponse(code = 404, message = "Erro ao salvar um cliente.")
     })
     public Cliente save ( @Valid @RequestBody Cliente cliente){
         return clientes.save(cliente);
@@ -51,7 +51,12 @@ public class ClienteController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    public void delete(@PathVariable Integer id){
+    @ApiOperation("Deletar um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente deletado com sucesso."),
+            @ApiResponse(code = 404, message = "Erro ao deletar.")
+    })
+    public void delete(@PathVariable @ApiParam("ID do cliente") Integer id){
         clientes.findById(id)
                 .map( cliente -> {
                     clientes.delete(cliente);
@@ -62,7 +67,12 @@ public class ClienteController {
 
     @PutMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    public void update(@PathVariable Integer id,
+    @ApiOperation("Alterar dados de um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente alterado com sucesso."),
+            @ApiResponse(code = 204, message = "Erro ao alterar.")
+    })
+    public void update(@PathVariable @ApiParam("ID do cliente") Integer id,
                                  @RequestBody @Valid Cliente cliente){
         clientes
                 .findById(id)
@@ -74,6 +84,11 @@ public class ClienteController {
     }
 
     @GetMapping
+    @ApiOperation("Procurar por um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 302, message = "Cliente encontrado."),
+            @ApiResponse(code = 204, message = "Cliente NÃO encontrado.")
+    })
     public List<Cliente> find(Cliente filtro){
         ExampleMatcher matcher = ExampleMatcher
                 .matching()

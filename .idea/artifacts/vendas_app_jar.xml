@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="vendas.app:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/vendas_app_jar</output-path>
+    <root id="archive" name="vendas.app.jar" />
+  </artifact>
+</component>
